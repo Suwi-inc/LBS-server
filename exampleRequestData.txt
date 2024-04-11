@@ -1,0 +1,35 @@
+  // Location Request
+  {
+    "gsm_cells": [
+        {
+            "countrycode": 250,
+            "operatorid": 2,
+            "cellid": 197403650,
+            "lac": 9900,
+            "signal_strength": -80,
+            "age": 1000
+        }
+    ],
+    "wifi_networks": [
+        {
+            "mac": "2CD02D814C80",
+            "signal_strength": -68,
+            "age": 500
+        },
+        {
+            "mac": "E4AA5DE28CD0",
+            "signal_strength": -60,
+            "age": 500
+        }
+    ],
+    "ip": {
+        "address_v4": "95.108.173.231"
+    }
+  }
+
+  // Get wifi_networks and cell towers
+  {
+    "device_id":"ASDGHJ01",
+    "jwt_token" :"token",
+  }
+
