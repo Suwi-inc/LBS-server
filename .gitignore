@@ -3,3 +3,4 @@ __pycache__
 LBSQueryParser
 migrations
 models.py
+config.py
