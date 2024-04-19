@@ -119,4 +119,6 @@ def get_celltowers():
 
     return jsonify({"device": data['device_id'], "gsm": cell_list}), 200
 
+if __name__ == "__main__":
+    app.run(host="0.0.0.0",port=5000)
 
