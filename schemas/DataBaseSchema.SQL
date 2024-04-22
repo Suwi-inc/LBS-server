@@ -13,6 +13,16 @@ CREATE TABLE IF NOT EXISTS device (
     device_model VARCHAR(128)
 );
 
+-- CREATE LOCATION
+CREATE TABLE IF NOT EXISTS location (
+    id SERIAL PRIMARY KEY,
+    latitude NUMERIC(10,7),
+    longitude NUMERIC(10,7),
+    location_precision NUMERIC,
+    location_type VARCHAR(10),
+    created_on TIMESTAMP,
+    updated_on TIMESTAMP
+);
 -- CREATE GSM_CELLS
 CREATE TABLE IF NOT EXISTS gsm_cell (
     id SERIAL PRIMARY KEY,
@@ -21,33 +31,23 @@ CREATE TABLE IF NOT EXISTS gsm_cell (
     cell_id VARCHAR(50),
     lac VARCHAR(50),
     signal_strength VARCHAR(50),
-    age VARCHAR(50)
+    age VARCHAR(50),
+    location INT,
+    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE WIFI_NETWORKS
 CREATE TABLE IF NOT EXISTS wifi_network (
     id SERIAL PRIMARY KEY,
     mac VARCHAR(128),
     signal_strength VARCHAR(50),
-    age VARCHAR(50)
+    age VARCHAR(50),
+    location INT,
+    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE IP
 CREATE TABLE IF NOT EXISTS ip (
     id SERIAL PRIMARY KEY,
-    ip_address VARCHAR(50)
-);
--- CREATE LOCATION
-CREATE TABLE IF NOT EXISTS location (
-    id SERIAL PRIMARY KEY,
-    latitude NUMERIC(10,7),
-    longitude NUMERIC(10,7),
-    location_precision NUMERIC,
-    location_type VARCHAR(10),
-    gsm_id INT,
-    wifi_id INT,
-    ip_id INT,
-    created_on TIMESTAMP,
-    updated_on TIMESTAMP,
-    FOREIGN KEY (gsm_id) REFERENCES gsm_cell (id) ON DELETE CASCADE,
-    FOREIGN KEY (wifi_id) REFERENCES wifi_network (id) ON DELETE CASCADE,
-    FOREIGN KEY (ip_id) REFERENCES ip (id) ON DELETE CASCADE
+    ip_address VARCHAR(50),
+    location INT,
+    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
 );
