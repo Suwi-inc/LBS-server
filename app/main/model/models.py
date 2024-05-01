@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
-from app import db
+from .. import db
 
 class Admin(db.Model):
     __tablename__ = 'admin'
