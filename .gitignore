@@ -3,3 +3,8 @@ __pycache__
 migrations
 config.py
 scripttorun.txt
+
+.ruff_cache
+src/.ruff_cache
+
+.idea
