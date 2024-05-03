@@ -28,6 +28,6 @@ def get_wifi():
         return jsonify({"No Access": "Unauthorized device"}), 401
     
     wifi_data = WifiNetwork.query.all()
-    wifi_list = [{'id': wifi.id, 'mac': wifi.mac, 'signal_strength': wifi.signal_strength, 'age': wifi.age} for wifi in wifi_data]
+    wifi_list = [{'id': wifi.id, 'mac': wifi.mac, 'signal_strength': wifi.signal_strength, 'age': wifi.age, 'location': wifi.location_id} for wifi in wifi_data]
 
     return jsonify({"device": data['device_id'], "wifi": wifi_list}), 200
