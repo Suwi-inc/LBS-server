@@ -25,3 +25,4 @@ def get_wifi():
 
     wifi_data = WifiNetwork.query.all()
     wifi_list = [{'id': wifi.id, 'mac': wifi.mac, 'signal_strength': wifi.signal_strength, 'age': wifi.age, 'location': wifi.location_id} for wifi in wifi_data]
+    return jsonify({"device": data["device_id"], "wifi": wifi_list}), 200
