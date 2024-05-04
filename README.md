@@ -15,7 +15,7 @@ pip install -r requirements.txt
 The project depends on some config that it expects to be provided from a .env file at the `app` directory.  
 Here is the expected content of the file
 ```env
-DB_URL='Postgres_DB_connect_string_here'
+DB_URI='Postgres_DB_connect_string_here'
 ```
 ### Step 4: Run Migrations
 
