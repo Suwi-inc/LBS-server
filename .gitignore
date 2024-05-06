@@ -2,6 +2,7 @@
 .env
 __pycache__
 migrations
+app/migrations
 config.py
 scripttorun.txt
 

@@ -1,10 +1,10 @@
 import math
 from typing import List, Tuple
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, abort, jsonify, request
 
 from .. import db
-from ..model.models import GsmCell
+from ..model.models import GsmCell, Location
 
 location = Blueprint("location", __name__)
 
@@ -19,9 +19,9 @@ dummy_location = {"latitude": 40.7128, "longitude": -74.0060, "altitude": 10, "p
 # 3. Does not account for altitude at all
 # 4. Impossible to know real precision
 # 5. Ignores abundance of data in the database
-def triangulate(gsmtowers: List[GsmCell]) -> Tuple[float, float]:
-    locations: List[Tuple[float, float]] = [(t.location.latitude, t.location.longitude) for t in gsmtowers]
-    strength: List[float] = [t.signal_strength for t in gsmtowers]
+def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[float, float]:
+    locations: List[Tuple[float, float]] = [(t[0].latitude, t[0].longitude) for t in gsmtowers]
+    strength: List[float] = [t[1] for t in gsmtowers]
     min_strength: float = min(strength)
     strength_shifted: List[float] = [(r - min_strength) for r in strength]
 
@@ -39,20 +39,36 @@ def add_new_gsm_cell(cell):
 
 @location.route("/", methods=["GET"])
 def get_location():
+    try:
+        print(request.get_json())
+    except Exception:
+        abort(400, "Could not parse request as JSON")
     data = request.json
-    if "wifi_networks" not in data and "gsm_cells" not in data and "ip" not in data:
+    if "gsm_cells" not in data:
         return jsonify({"error": "Not enough data provided"}), 400
-    gsm_cell_obj: List[GsmCell] = []
+    gsm_cell_locations: List[(GsmCell, Location)] = []
+    if len(data["gsm_cells"]) < 2:
+        abort(400, f'Need at least 2 cell towers to determine location, got {len(data["gsm_cells"])}')
     for cell in data["gsm_cells"]:
         gsm_cell: List[GsmCell] = db.session.execute(
             db.select(GsmCell).where(
-                GsmCell.country_code == cell["country_code"] and GsmCell.operator_id == cell["operator_id"] and GsmCell.cell_id == cell["cell_id"]
+                (GsmCell.country_code == cell["country_code"]) & (GsmCell.operator_id == cell["operator_id"]) & (GsmCell.cell_id == cell["cell_id"])
             )
-        )
+        ).all()
+
         assert len(gsm_cell) <= 1, "Combination of country_code operator_id and cell_id is supposed to be unique"
+
         if len(gsm_cell) == 0:
             add_new_gsm_cell(cell)
-        gsm_cell_obj.append(gsm_cell[0])
-    loc_tuple = triangulate(gsm_cell_obj)
-    location = {"latitude": loc_tuple[0], "longitude": loc_tuple[1], "altitude": 0, "precision": 100, "altitude_precision": 0, "type": "GSM"}
-    return jsonify({"Location": location}), 200
+            abort(500, "Adding new tower is not yet implemented")
+
+        gsm_cell: GsmCell = gsm_cell[0]._mapping["GsmCell"]
+        location: List[Location] = db.session.execute(db.select(Location).where(Location.id == gsm_cell.location_id)).all()
+
+        assert len(location) == 1, f"We do not have location for cell tower {gsm_cell.cell_id}, strange"
+        location: Location = location[0]._mapping["Location"]
+
+        gsm_cell_locations.append((location, cell["signal_strength"]))
+    loc_tuple = triangulate(gsm_cell_locations)
+    location_res = {"latitude": loc_tuple[0], "longitude": loc_tuple[1], "altitude": 0, "precision": 100, "altitude_precision": 0, "type": "GSM"}
+    return jsonify({"Location": location_res}), 200

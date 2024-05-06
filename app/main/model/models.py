@@ -24,9 +24,9 @@ class Device(db.Model):
 class Location(db.Model):
     __tablename__ = "location"
     id = db.Column(db.Integer, primary_key=True)
-    latitude = db.Column(db.Numeric(10, 7))
-    longitude = db.Column(db.Numeric(10, 7))
-    location_precision = db.Column(db.Numeric)
+    latitude = db.Column(db.Double())
+    longitude = db.Column(db.Double())
+    location_precision = db.Column(db.Integer())
     location_type = db.Column(db.String(10))
     created_on = db.Column(db.TIMESTAMP, default=datetime.utcnow)
     updated_on = db.Column(db.TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
@@ -36,12 +36,12 @@ class Location(db.Model):
 class GsmCell(db.Model):
     __tablename__ = "gsm_cell"
     id = db.Column(db.Integer, primary_key=True)
-    country_code = db.Column(db.String(50))
-    operator_id = db.Column(db.String(50))
-    cell_id = db.Column(db.String(50))
-    lac = db.Column(db.String(50))
-    signal_strength = db.Column(db.String(50))
-    age = db.Column(db.String(50))
+    country_code = db.Column(db.Integer())
+    operator_id = db.Column(db.Integer())
+    cell_id = db.Column(db.Integer())
+    lac = db.Column(db.Integer())
+    signal_strength = db.Column(db.Integer())
+    age = db.Column(db.Integer())
     location_id = db.Column(db.Integer, ForeignKey("location.id", ondelete="CASCADE"))
     location = relationship("Location")
     __table_args__ = {"extend_existing": True}
@@ -51,8 +51,8 @@ class WifiNetwork(db.Model):
     __tablename__ = "wifi_network"
     id = db.Column(db.Integer, primary_key=True)
     mac = db.Column(db.String(128))
-    signal_strength = db.Column(db.String(50))
-    age = db.Column(db.String(50))
+    signal_strength = db.Column(db.Integer())
+    age = db.Column(db.Integer())
     location_id = db.Column(db.Integer, ForeignKey("location.id", ondelete="CASCADE"))
     location = relationship("Location")
     __table_args__ = {"extend_existing": True}
