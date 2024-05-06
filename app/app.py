@@ -2,8 +2,8 @@ from flask_migrate import Migrate
 from main import create_app, db
 from main.controller.admin_route import admin
 from main.controller.gsm_cell import cell
-from main.controller.wifi_network import wifi
 from main.controller.location import location
+from main.controller.wifi_network import wifi
 
 app = create_app()
 
