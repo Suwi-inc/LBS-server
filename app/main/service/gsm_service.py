@@ -1,5 +1,5 @@
-from flask import jsonify
 from ..model.models import GsmCell
+
 
 def get_celltowers_service():
     cell_data = GsmCell.query.all()
@@ -16,9 +16,6 @@ def get_celltowers_service():
         for cell in cell_data
     ]
     response_object = {
-            "cell_towers": cell_list,
-        }
+        "cell_towers": cell_list,
+    }
     return response_object, 200
-
-    
-    
