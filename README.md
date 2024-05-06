@@ -12,7 +12,10 @@ pip install -r requirements.txt
 ```
 ### Step 3: Create .env
 
-The project depends on some config that it expects to be provided from a .env file at the `app` directory.  
+The project depends on some config that it expects to be provided from a .env file at the `app` directory. 
+```sh
+cd app
+``` 
 Here is the expected content of the file
 ```env
 DB_URI='Postgres_DB_connect_string_here'
@@ -30,7 +33,10 @@ Within the `app` directory
 flask --app app run   
 ```
 # Build and Run on Docker
-
+Move into the root directory
+```sh
+cd .. 
+```
 ### Step 1: Build
 ```sh
 docker build -t 'your_image_name' .   
