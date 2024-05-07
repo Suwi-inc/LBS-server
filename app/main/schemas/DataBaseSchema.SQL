@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS location (
     id SERIAL PRIMARY KEY,
     latitude NUMERIC(10,7),
     longitude NUMERIC(10,7),
-    location_precision NUMERIC,
+    location_precision INT,
     location_type VARCHAR(10),
     created_on TIMESTAMP,
     updated_on TIMESTAMP
@@ -26,28 +26,28 @@ CREATE TABLE IF NOT EXISTS location (
 -- CREATE GSM_CELLS
 CREATE TABLE IF NOT EXISTS gsm_cell (
     id SERIAL PRIMARY KEY,
-    country_code VARCHAR(50),
-    operator_id VARCHAR(50),
-    cell_id VARCHAR(50),
-    lac VARCHAR(50),
-    signal_strength VARCHAR(50),
-    age VARCHAR(50),
+    country_code INT,
+    operator_id INT,
+    cell_id INT,
+    lac INT,
+    signal_strength INT,
+    age INT,
     location_id INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE WIFI_NETWORKS
 CREATE TABLE IF NOT EXISTS wifi_network (
     id SERIAL PRIMARY KEY,
     mac VARCHAR(128),
-    signal_strength VARCHAR(50),
-    age VARCHAR(50),
+    signal_strength INT,
+    age INT,
     location_id INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE IP
 CREATE TABLE IF NOT EXISTS ip (
     id SERIAL PRIMARY KEY,
     ip_address VARCHAR(50),
-    location INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    location_id INT,
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
