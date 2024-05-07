@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS gsm_cell (
     signal_strength VARCHAR(50),
     age VARCHAR(50),
     location_id INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE WIFI_NETWORKS
 CREATE TABLE IF NOT EXISTS wifi_network (
@@ -42,12 +42,12 @@ CREATE TABLE IF NOT EXISTS wifi_network (
     signal_strength VARCHAR(50),
     age VARCHAR(50),
     location_id INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
 -- CREATE IP
 CREATE TABLE IF NOT EXISTS ip (
     id SERIAL PRIMARY KEY,
     ip_address VARCHAR(50),
-    location INT,
-    FOREIGN KEY (location) REFERENCES location (id) ON DELETE CASCADE
+    location_id INT,
+    FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );

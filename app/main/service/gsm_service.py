@@ -1,8 +1,9 @@
 from ..model.models import GsmCell
+from ..model.models import Location
 
 
 def get_celltowers_service():
-    cell_data = GsmCell.query.all()
+    cell_data = GsmCell.query.join(Location).all()
     cell_list = [
         {
             "id": cell.id,
@@ -12,8 +13,12 @@ def get_celltowers_service():
             "lac": cell.lac,
             "signal_strength": cell.signal_strength,
             "age": cell.age,
-        }
-        for cell in cell_data
+            "Location": {
+                "latitude": cell.location.latitude,
+                "longitude": cell.location.longitude,
+                "location_precision": cell.location.location_precision,
+            }
+        } for cell in cell_data
     ]
     response_object = {
         "cell_towers": cell_list,
