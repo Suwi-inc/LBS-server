@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  lbs-server:
+    build: ./LBS
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+      - DB_URI=postgresql://postgres:aardes123@localhost/postgres
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: aardes123
+      POSTGRES_DB: postgres
