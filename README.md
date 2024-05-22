@@ -33,17 +33,9 @@ Within the `app` directory
 flask --app app run   
 ```
 # Build and Run on Docker
-Move into the root directory
+Required docker version: >=4.25.2
 ```sh
-cd .. 
-```
-### Step 1: Build
-```sh
-docker build -t 'your_image_name' .   
-```
-### Step 2: Run
-```sh
-docker run -p 5000:5000 -e DB_URI='Postgres_DB_connect_string_here' 'your_image_name' 
+docker compose up --build -d
 ```
 # File structure
 
