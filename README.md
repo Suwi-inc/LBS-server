@@ -45,7 +45,7 @@ docker build -t 'your_image_name' .
 ```sh
 docker run -p 5000:5000 -e DB_URI='Postgres_DB_connect_string_here' 'your_image_name' 
 ```
-# File structure
+# File structure 
 
 ```
 LBS Server.
