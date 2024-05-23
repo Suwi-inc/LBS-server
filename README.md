@@ -34,6 +34,7 @@ flask --app app run
 ```
 # Build and Run on Docker
 Required docker version: >=4.25.2
+Before running, place an .env file in the root directory
 ```sh
 docker compose up --build -d
 ```
