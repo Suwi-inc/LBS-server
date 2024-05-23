@@ -38,7 +38,7 @@ Before running, place an .env file in the root directory
 ```sh
 docker compose up --build -d
 ```
-# File structure
+# File structure 
 
 ```
 LBS Server.
