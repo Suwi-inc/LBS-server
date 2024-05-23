@@ -1,6 +1,6 @@
 FROM python:3.12.2-alpine
 
-WORKDIR /app
+WORKDIR /LBS
 
 COPY ./requirements.txt .
 
