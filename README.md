@@ -38,21 +38,28 @@ Before running, place an .env file in the root directory
 ```sh
 docker compose up --build -d
 ```
-# File structure 
+# Project File structure 
 
 ```
-LBS Server.
+LBS-Server
 │   .dockerignore
 │   .gitignore
 │   .pre-commit-config.yaml
-│   Dockerfile
+│   docker-compose.yml
 │   README.md
-│   requirements.txt
 │   ruff.toml
-└───app
-    │   .env
+│   scripttorun.txt
+│   test_backup.sql
+│  
+├───.github
+│   └───workflows
+│           docker-image.yml
+│           
+└───LBS
+    │   config.py                                           # place our config here to run locally
     │   app.py
-    │   config.py
+    │   Dockerfile
+    │   requirements.txt
     │   
     ├───main
     │   │   DataObjects.py
@@ -61,14 +68,12 @@ LBS Server.
     │   ├───controller
     │   │   │   admin_route.py
     │   │   │   gsm_cell.py
+    │   │   │   location.py
     │   │   │   wifi_network.py
     │   │   │   __init__.py
-    │   │     
+    │   │   │   
     │   │   
     │   │           
-    │   ├───location
-    │   │       triangulation.py
-    │   │       
     │   ├───model
     │   │   │   models.py
     │   │   │   
@@ -79,12 +84,15 @@ LBS Server.
     │   │       DataBaseSchema.SQL
     │   │       
     │   ├───service
-    │       │   admin_service.py
-    │       │   gsm_service.py
-    │       │   wifi_service.py
-    │                   
-    ├───template
-    │       exampleRequestData.txt
-    │       
-    ├───test
+    │   │   │   admin_service.py
+    │   │   │   gsm_service.py
+    │   │   │   wifi_service.py
+    │   │   │   
+    │   │   └───__pycache__
+    │   │           admin_service.cpython-311.pyc
+    │   │           gsm_service.cpython-311.pyc
+    │   │           wifi_service.cpython-311.pyc
+    │   │           
+    │   ├───utils
+            │   data_validator.py
 ```
