@@ -10,5 +10,3 @@ scripttorun.txt
 src/.ruff_cache
 
 .idea
-
-/test_database

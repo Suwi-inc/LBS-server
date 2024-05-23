@@ -14,11 +14,5 @@ app.register_blueprint(cell, url_prefix="/celltower")
 app.register_blueprint(wifi, url_prefix="/wifi")
 app.register_blueprint(location, url_prefix="/location")
 
-#for tests, got to be delete later
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-#deleted later
-
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000)

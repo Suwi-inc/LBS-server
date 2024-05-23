@@ -33,10 +33,17 @@ Within the `app` directory
 flask --app app run   
 ```
 # Build and Run on Docker
-Required docker version: >=4.25.2
-Before running, place an .env file in the root directory
+Move into the root directory
 ```sh
-docker compose up --build -d
+cd .. 
+```
+### Step 1: Build
+```sh
+docker build -t 'your_image_name' .   
+```
+### Step 2: Run
+```sh
+docker run -p 5000:5000 -e DB_URI='Postgres_DB_connect_string_here' 'your_image_name' 
 ```
 # File structure
 
