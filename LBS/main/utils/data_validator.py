@@ -1,5 +1,5 @@
-def validate_request_data(data):
-    if "device_id" not in data or "jwt_token" not in data:
+def validate_device_data(data):
+    if "device_model" not in data or "serial_number" not in data:
         return False
     return True
 

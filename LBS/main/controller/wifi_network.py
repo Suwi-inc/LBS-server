@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 
 from ..service.wifi_service import get_wifinetworks_service
-from ..utils.data_validator import validate_request_data
+from ..utils.data_validator import validate_device_data
 
 wifi = Blueprint("wifi", __name__)
 
@@ -10,7 +10,7 @@ wifi = Blueprint("wifi", __name__)
 def get_wifinetworks():
     data = request.get_json()
 
-    if not validate_request_data(data):
-        return jsonify({"No Access": "Unauthorized device"}), 401
+    if not validate_device_data(data):
+        return jsonify({"Fail": "Missing device data"}), 422
 
     return get_wifinetworks_service()
