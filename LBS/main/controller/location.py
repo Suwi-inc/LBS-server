@@ -1,3 +1,5 @@
+import json
+import logging
 import math
 from typing import List, Tuple
 
@@ -5,7 +7,6 @@ from flask import Blueprint, abort, jsonify, request
 
 from .. import db
 from ..model.models import GsmCell, Location
-from ..auth.auth_guard import auth_guard
 
 location = Blueprint("location", __name__)
 
@@ -28,16 +29,12 @@ dummy_location = {
 # 4. Impossible to know real precision
 # 5. Ignores abundance of data in the database
 def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[float, float]:
-    locations: List[Tuple[float, float]] = [
-        (t[0].latitude, t[0].longitude) for t in gsmtowers
-    ]
+    locations: List[Tuple[float, float]] = [(t[0].latitude, t[0].longitude) for t in gsmtowers]
     strength: List[float] = [t[1] for t in gsmtowers]
     min_strength: float = min(strength)
     strength_shifted: List[float] = [(r - min_strength) for r in strength]
 
-    locations_weighted: List[Tuple[float, float]] = [
-        (i * s, j * s) for (i, j), s in zip(locations, strength_shifted)
-    ]
+    locations_weighted: List[Tuple[float, float]] = [(i * s, j * s) for (i, j), s in zip(locations, strength_shifted)]
     final_location: Tuple[float, float] = (
         math.fsum([i for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
         math.fsum([j for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
@@ -49,14 +46,15 @@ def add_new_gsm_cell(cell):
     pass
 
 
-@location.route("/", methods=["GET"])
-@auth_guard()
+@location.route("/", methods=["POST"])
+# @auth_guard()
 def get_location():
+    logging.basicConfig(level=logging.DEBUG)
     try:
-        print(request.get_json())
+        print(json.loads(request.data.decode("utf-8").replace("json=", "")))
     except Exception:
         abort(400, "Could not parse request as JSON")
-    data = request.json
+    data = json.loads(request.data.decode("utf-8").replace("json=", ""))
     if "gsm_cells" not in data:
         return jsonify({"error": "Not enough data provided"}), 400
     gsm_cell_locations: List[(GsmCell, Location)] = []
@@ -68,28 +66,20 @@ def get_location():
     for cell in data["gsm_cells"]:
         gsm_cell: List[GsmCell] = db.session.execute(
             db.select(GsmCell).where(
-                (GsmCell.country_code == cell["country_code"])
-                & (GsmCell.operator_id == cell["operator_id"])
-                & (GsmCell.cell_id == cell["cell_id"])
+                (GsmCell.country_code == cell["country_code"]) & (GsmCell.operator_id == cell["operator_id"]) & (GsmCell.cell_id == cell["cell_id"])
             )
         ).all()
 
-        assert (
-            len(gsm_cell) <= 1
-        ), "Combination of country_code operator_id and cell_id is supposed to be unique"
+        assert len(gsm_cell) <= 1, "Combination of country_code operator_id and cell_id is supposed to be unique"
 
         if len(gsm_cell) == 0:
             add_new_gsm_cell(cell)
             abort(500, "Adding new tower is not yet implemented")
 
         gsm_cell: GsmCell = gsm_cell[0]._mapping["GsmCell"]
-        location: List[Location] = db.session.execute(
-            db.select(Location).where(Location.id == gsm_cell.location_id)
-        ).all()
+        location: List[Location] = db.session.execute(db.select(Location).where(Location.id == gsm_cell.location_id)).all()
 
-        assert (
-            len(location) == 1
-        ), f"We do not have location for cell tower {gsm_cell.cell_id}, strange"
+        assert len(location) == 1, f"We do not have location for cell tower {gsm_cell.cell_id}, strange"
         location: Location = location[0]._mapping["Location"]
 
         gsm_cell_locations.append((location, cell["signal_strength"]))
