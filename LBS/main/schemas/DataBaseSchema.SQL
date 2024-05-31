@@ -51,3 +51,14 @@ CREATE TABLE IF NOT EXISTS ip (
     location_id INT,
     FOREIGN KEY (location_id) REFERENCES location (id) ON DELETE CASCADE
 );
+
+CREATE INDEX IF NOT EXISTS gsm_cell_location
+ON gsm_cell(location_id);
+
+CREATE INDEX IF NOT EXISTS wifi_network_location
+ON wifi_network(location_id);
+
+
+CREATE INDEX IF NOT EXISTS ip_location
+ON ip(location_id);
+

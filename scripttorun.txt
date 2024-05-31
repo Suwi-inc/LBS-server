@@ -1,7 +1,0 @@
-pip install -r requirements.txt
---for migrations
-flask db init
-flask db migrate -m "migration number and name"
-flask db upgrade
--- to run server
-flask --app app run

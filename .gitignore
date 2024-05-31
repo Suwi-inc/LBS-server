@@ -10,5 +10,8 @@ scripttorun.txt
 src/.ruff_cache
 
 .idea
+Lib
+Scripts
+pyvenv.cfg
 
 /test_database

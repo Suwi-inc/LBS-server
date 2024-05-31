@@ -8,29 +8,30 @@ git clone https://github.com/Suwi-inc/LBS-server.git
 ``` 
 ### Step 2. Inside the repository directory install the project dependencies
 ```sh
-pip install -r requirements.txt
+poetry install
 ```
 ### Step 3: Create .env
 
-The project depends on some config that it expects to be provided from a .env file at the `app` directory. 
+The project depends on some config that it expects to be provided from a .env file at the `LBS` directory. 
 ```sh
-cd app
+cd LBS
 ``` 
 Here is the expected content of the file
 ```env
 DB_URI='Postgres_DB_connect_string_here'
+SECRET_KEY='your_auth_secret'
 ```
 ### Step 4: Run Migrations
-
+Inside the `LBS` directory run
 ```sh
-flask db init
-flask db migrate
-flask db upgrade
+poetry run flask db init
+poetry run flask db migrate
+poetry run flask db upgrade
 ```
-### Step 5: Run the program
-Within the `app` directory
+### Step 5: Run the application
+Within the `LBS` directory
 ```sh
-flask --app app run   
+poetry run flask --app app run   
 ```
 # Build and Run on Docker
 Required docker version: >=4.25.2

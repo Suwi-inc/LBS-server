@@ -1,22 +1,20 @@
 from flask import Blueprint, jsonify, request
 
 from ..service.gsm_service import add_cell_towers_service, get_celltowers_service
-from ..utils.data_validator import validate_cell_tower_data, validate_request_data
+from ..utils.data_validator import validate_cell_tower_data, validate_device_data
+from ..auth.auth_guard import auth_guard
 
 cell = Blueprint("cell", __name__)
 
 
 @cell.route("/", methods=["GET"])
+@auth_guard()
 def get_celltowers():
-    data = request.get_json()
-
-    if not validate_request_data(data):
-        return jsonify({"No Access": "Unauthorized device"}), 401
-
     return get_celltowers_service()
 
 
 @cell.route("/", methods=["POST"])
+@auth_guard()
 def add_celltowers():
     data = request.get_json()
 
