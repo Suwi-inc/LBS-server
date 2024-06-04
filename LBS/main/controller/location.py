@@ -10,16 +10,6 @@ from ..model.models import GsmCell, Location
 
 location = Blueprint("location", __name__)
 
-dummy_location = {
-    "latitude": 40.7128,
-    "longitude": -74.0060,
-    "altitude": 10,
-    "precision": 5,
-    "altitude_precision": 2,
-    "type": "GSM",
-}
-
-
 # https://ieeexplore.ieee.org/abstract/document/7456592
 # Has multiple flaws:
 # 1. Does not account for the fact that all the math is happening on spheroid
@@ -66,7 +56,10 @@ def get_location():
     for cell in data["gsm_cells"]:
         gsm_cell: List[GsmCell] = db.session.execute(
             db.select(GsmCell).where(
-                (GsmCell.country_code == cell["country_code"]) & (GsmCell.operator_id == cell["operator_id"]) & (GsmCell.cell_id == cell["cell_id"])
+                (GsmCell.country_code == cell["country_code"]) & 
+                (GsmCell.operator_id == cell["operator_id"]) & 
+                (GsmCell.cell_id == cell["cell_id"]) &
+                (GsmCell.lac == cell["lac"])
             )
         ).all()
 
