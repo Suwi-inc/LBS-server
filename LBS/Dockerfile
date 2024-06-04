@@ -12,4 +12,4 @@ RUN poetry install
 
 COPY . .
 
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+CMD ["poetry", "run", "flask", "--app", "app", "run", "--host=0.0.0.0"]

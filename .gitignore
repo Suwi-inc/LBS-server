@@ -15,3 +15,5 @@ Scripts
 pyvenv.cfg
 
 /test_database
+.vscode
+test_backup.sql

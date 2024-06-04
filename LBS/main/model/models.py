@@ -41,7 +41,6 @@ class GsmCell(db.Model):
     cell_id = db.Column(db.Integer())
     lac = db.Column(db.Integer())
     signal_strength = db.Column(db.Integer())
-    age = db.Column(db.Integer())
     location_id = db.Column(db.Integer, ForeignKey("location.id", ondelete="CASCADE"))
     location = relationship("Location")
     __table_args__ = {"extend_existing": True}
