@@ -50,6 +50,8 @@ def add_new_gsm_cell(cell):
 # @auth_guard()
 def get_location():
     logging.basicConfig(level=logging.DEBUG)
+    print(json.loads(request.data.decode("utf-8").replace("json=", "")))
+    return jsonify({"position": dummy_location}), 200
     try:
         print(json.loads(request.data.decode("utf-8").replace("json=", "")))
     except Exception:
