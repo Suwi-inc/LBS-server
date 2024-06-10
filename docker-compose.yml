@@ -6,7 +6,8 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - "DB_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
+      - "DB_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"  #prod (docker run)
+      #- "DB_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${REMOTE_IP}:${REMOTE_DB_PORT}/${POSTGRES_DB}" #dev (manual run)
     depends_on:
       - db
   db:
