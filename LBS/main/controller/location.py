@@ -68,14 +68,12 @@ def get_location():
     except Exception:
         abort(400, "Could not parse request as JSON")
     data = json.loads(request.data.decode("utf-8").replace("json=", ""))
+
     if "gsm_cells" not in data:
         return jsonify({"error": "Not enough data provided"}), 400
+    
     gsm_cell_locations: List[(GsmCell, Location)] = []
-    if len(data["gsm_cells"]) < 2:
-        abort(
-            400,
-            f'Need at least 2 cell towers to determine location, got {len(data["gsm_cells"])}',
-        )
+
     for cell in data["gsm_cells"]:
         gsm_cell: List[GsmCell] = db.session.execute(
             db.select(GsmCell).where(
@@ -99,6 +97,19 @@ def get_location():
         location: Location = location[0]._mapping["Location"]
 
         gsm_cell_locations.append((location, cell["signal_strength"]))
+
+    if len(data["gsm_cells"]) == 2:
+        abort(400, f'Need at least 2 cell towers to determine location, got 2')
+    
+    if len(data["gsm_cells"]) == 1:
+        location_res = {
+            "latitude": gsm_cell_locations[0][0].latitude,
+            "longitude": gsm_cell_locations[0][0].longitude,
+            "altitude": -1,
+            "precision": gsm_cell_locations[0][0].location_precision,
+        }   
+        return jsonify({"Location": location_res}), 200
+    
     loc_tuple = triangulate(gsm_cell_locations)
     location_res = {
         "latitude": loc_tuple[0][0],
