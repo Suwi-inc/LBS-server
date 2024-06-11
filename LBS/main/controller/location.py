@@ -7,6 +7,7 @@ from flask import Blueprint, abort, jsonify, request
 
 from .. import db
 from ..model.models import GsmCell, Location
+from ..auth.auth_guard import auth_guard
 
 location = Blueprint("location", __name__)
 
@@ -18,7 +19,7 @@ location = Blueprint("location", __name__)
 # 3. Does not account for altitude at all
 # 4. Impossible to know real precision
 # 5. Ignores abundance of data in the database
-def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[float, float]:
+def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[Tuple[float, float], int]:
     locations: List[Tuple[float, float]] = [(t[0].latitude, t[0].longitude) for t in gsmtowers]
     strength: List[float] = [t[1] for t in gsmtowers]
     min_strength: float = min(strength)
@@ -29,15 +30,37 @@ def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[float, float]:
         math.fsum([i for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
         math.fsum([j for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
     )
-    return final_location
 
+    precision: float = max_distance(locations, final_location)
+    return final_location, round(precision)
+
+def calculate_spherical_distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float:
+    RADIUS: float = 6371000.0 #Earth radius in m
+
+    lat1, lon1 = math.radians(point1[0]), math.radians(point1[1])
+    lat2, lon2 = math.radians(point2[0]), math.radians(point2[1])
+
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
+
+    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+
+    return RADIUS * c
+
+def max_distance(points: List[Tuple[float, float]], p: Tuple[float, float]) -> float:
+    max_dist = 0
+    for point in points:
+        dist = calculate_spherical_distance(p, point)
+        max_dist = max(max_dist, dist)
+    return max_dist
 
 def add_new_gsm_cell(cell):
     pass
 
 
 @location.route("/", methods=["POST"])
-# @auth_guard()
+@auth_guard()
 def get_location():
     logging.basicConfig(level=logging.DEBUG)
     try:
@@ -78,11 +101,9 @@ def get_location():
         gsm_cell_locations.append((location, cell["signal_strength"]))
     loc_tuple = triangulate(gsm_cell_locations)
     location_res = {
-        "latitude": loc_tuple[0],
-        "longitude": loc_tuple[1],
-        "altitude": 0,
-        "precision": 100,
-        "altitude_precision": 0,
-        "type": "GSM",
+        "latitude": loc_tuple[0][0],
+        "longitude": loc_tuple[0][1],
+        "altitude": -1,
+        "precision": loc_tuple[1],
     }
     return jsonify({"Location": location_res}), 200
