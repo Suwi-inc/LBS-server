@@ -99,7 +99,7 @@ def get_location():
     # if len(data["gsm_cells"]) == 2:
     #     abort(400, f'Need at least 2 cell towers to determine location, got 2')
     
-    if len(data["gsm_cells"]) == 1 | 2:
+    if len(data["gsm_cells"]) == 1 or 2:
         location_res = {
             "latitude": gsm_cell_locations[0][0].latitude,
             "longitude": gsm_cell_locations[0][0].longitude,
