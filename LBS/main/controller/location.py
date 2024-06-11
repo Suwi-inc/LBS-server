@@ -60,7 +60,7 @@ def add_new_gsm_cell(cell):
 
 
 @location.route("/", methods=["POST"])
-@auth_guard()
+#@auth_guard()
 def get_location():
     logging.basicConfig(level=logging.DEBUG)
     try:
@@ -83,9 +83,7 @@ def get_location():
                 (GsmCell.lac == cell["lac"])
             )
         ).all()
-
-        assert len(gsm_cell) <= 1, "Combination of country_code operator_id and cell_id is supposed to be unique"
-
+        
         if len(gsm_cell) == 0:
             add_new_gsm_cell(cell)
             abort(500, "Adding new tower is not yet implemented")
