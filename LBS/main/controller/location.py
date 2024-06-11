@@ -105,6 +105,8 @@ def get_location():
             "longitude": gsm_cell_locations[0][0].longitude,
             "altitude": -1,
             "precision": gsm_cell_locations[0][0].location_precision,
+            "altitude_precision": 2,
+            "type": "GSM",
         }   
         return jsonify({"Location": location_res}), 200
     
