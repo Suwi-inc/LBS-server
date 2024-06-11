@@ -96,19 +96,19 @@ def get_location():
 
         gsm_cell_locations.append((location, cell["signal_strength"]))
 
-    if len(data["gsm_cells"]) == 2:
-        abort(400, f'Need at least 2 cell towers to determine location, got 2')
+    # if len(data["gsm_cells"]) == 2:
+    #     abort(400, f'Need at least 2 cell towers to determine location, got 2')
     
-    if len(data["gsm_cells"]) == 1:
+    if len(data["gsm_cells"]) == 1 | 2:
         location_res = {
             "latitude": gsm_cell_locations[0][0].latitude,
             "longitude": gsm_cell_locations[0][0].longitude,
             "altitude": -1,
             "precision": gsm_cell_locations[0][0].location_precision,
-            "altitude_precision": 2,
+            "altitude_precision": -1,
             "type": "GSM",
         }   
-        return jsonify({"Location": location_res}), 200
+        return jsonify({"position": location_res}), 200
     
     loc_tuple = triangulate(gsm_cell_locations)
     location_res = {
@@ -116,5 +116,7 @@ def get_location():
         "longitude": loc_tuple[0][1],
         "altitude": -1,
         "precision": loc_tuple[1],
+        "altitude_precision": -1,
+        "type": "GSM",
     }
-    return jsonify({"Location": location_res}), 200
+    return jsonify({"position": location_res}), 200
