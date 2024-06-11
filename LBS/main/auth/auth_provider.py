@@ -25,4 +25,4 @@ def authenticate_admin(user_name, password):
             "roles": ["admin", "user"],
         }
     else:
-        return {"status": "fail", "message": "User does not exist"}
+        return None
