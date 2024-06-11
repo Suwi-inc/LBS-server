@@ -29,7 +29,9 @@ class Location(db.Model):
     location_precision = db.Column(db.Integer())
     location_type = db.Column(db.String(10))
     created_on = db.Column(db.TIMESTAMP, default=datetime.utcnow)
-    updated_on = db.Column(db.TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_on = db.Column(
+        db.TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
     __table_args__ = {"extend_existing": True}
 
 
@@ -41,6 +43,7 @@ class GsmCell(db.Model):
     cell_id = db.Column(db.Integer())
     lac = db.Column(db.Integer())
     signal_strength = db.Column(db.Integer())
+    age = db.Column(db.Integer())
     location_id = db.Column(db.Integer, ForeignKey("location.id", ondelete="CASCADE"))
     location = relationship("Location")
     __table_args__ = {"extend_existing": True}
