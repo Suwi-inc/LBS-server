@@ -1,0 +1,319 @@
+{
+	"info": {
+		"_postman_id": "f3550b01-5595-4a12-a02a-97ef38190b8a",
+		"name": "LBS-Endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19593119"
+	},
+	"item": [
+		{
+			"name": "Create Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\":\"Admin Example\",\r\n    \"password\": \"bad_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}//admin/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"",
+						"admin",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate Admin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_name\":\"Admin Example\",\r\n    \"password\":\"bad_password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admin/auth",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get admin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/admin",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"admin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Device",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device_model\":\"device example\",\r\n    \"serial_number\":\"abcdef5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/device/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"device",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate Device",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device_model\":\"model 1\",\r\n    \"serial_number\":\"abcdef5\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/device/auth",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"device",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get cell tower data",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/celltower",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"celltower"
+					],
+					"query": [
+						{
+							"key": "base_url",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "bearer_token",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all wifi data",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/wifi",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"wifi"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get location based on Cell Tower Data",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"gsm_cells\": [\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10686,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -60\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10684,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -50\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 2013,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -10\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/location",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"location"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add cell tower data to db",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cell_towers\": \r\n    [\r\n        {\r\n            \"country_code\": 1,\r\n            \"operator_id\": 101,\r\n            \"cell_id\": 12345,\r\n            \"lac\": 1001,\r\n            \"signal_strength\": -70,\r\n            \"age\": 10\r\n        },\r\n        {\r\n            \"country_code\": 1,\r\n            \"operator_id\": 102,\r\n            \"cell_id\": 12346,\r\n            \"lac\": 1002,\r\n            \"signal_strength\": -75,\r\n            \"age\": 15\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/celltower",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"celltower"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:5000"
+		}
+	]
+}
