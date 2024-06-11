@@ -23,7 +23,6 @@ def create_admin(data):
 
 
 def auth_admin_service(data):
-    print(data["user_name"])
     user_name = data["user_name"]
     password = data["password"]
     if not user_name or not password:
