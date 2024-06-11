@@ -14,10 +14,7 @@ def authenticate_device(device, serial):
             "roles": ["user"],
         }
     else:
-        return {
-            "status": "fail",
-            "message": "Device not found",
-        }
+        return None
 
 
 def authenticate_admin(user_name, password):
