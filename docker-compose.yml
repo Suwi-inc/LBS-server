@@ -19,4 +19,4 @@ services:
     volumes:
       - .:/docker-entrypoint-initdb.d
     ports:
-      - "5433:5432"
+      - "${REMOTE_DB_PORT}:5432"
