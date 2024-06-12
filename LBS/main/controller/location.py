@@ -72,7 +72,7 @@ def get_location():
     if "gsm_cells" not in data:
         return jsonify({"error": "Not enough data provided"}), 400
     
-    gsm_cell_locations: List[(GsmCell, Location)] = []
+    gsm_cell_locations: List[(Location, float)] = []
 
     for cell in data["gsm_cells"]:
         gsm_cell: List[GsmCell] = db.session.execute(
