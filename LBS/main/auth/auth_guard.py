@@ -1,6 +1,8 @@
 from flask import request, jsonify
 from .jwt_handler import decode_jwt
 from ..utils.logger import log_error
+from ..utils.route_information import RouteInfo
+from .. import db
 
 
 def check_jwt():
@@ -24,12 +26,22 @@ def auth_guard(role=None):
             try:
                 user_data = check_jwt()
             except Exception as e:
-                log_error(route_function.__name__, e, __name__, "warn")
+                log_error(
+                    RouteInfo(route_function.__name__, route_function.__name__),
+                    str(e),
+                    __name__,
+                )
+
                 return jsonify({"message": f"{e}", "status": 401}), 401
 
             # Authorization gate
             if role and role not in user_data["roles"]:
-                log_error(route_function, "Invalid Role", __name__)
+
+                log_error(
+                    RouteInfo(route_function.__name__, route_function.__name__),
+                    "Invalid Role",
+                    __name__,
+                )
                 return (
                     jsonify({"message": "Authorization required.", "status": 403}),
                     403,

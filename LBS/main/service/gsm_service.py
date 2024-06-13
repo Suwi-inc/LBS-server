@@ -1,10 +1,11 @@
 from ..model.models import GsmCell
 from ..model.models import Location
 from ..utils.logger import log_request
+from ..utils.route_information import RouteInfo
 from .. import db
 
 
-def get_celltowers_service(request):
+def get_celltowers_service(request: RouteInfo):
     cell_data = GsmCell.query.join(Location).all()
     cell_list = [
         {

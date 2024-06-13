@@ -10,7 +10,7 @@ device = Blueprint("device", __name__)
 @device.route("/register", methods=["POST"])
 def add_device():
     # change device registration later checking that
-    # only authentic device are eligible for registration
+    # only authentic devices are eligible for registration
     data = request.get_json()
 
     return add_device_service(data)
