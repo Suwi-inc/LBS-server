@@ -7,6 +7,7 @@ from .. import db
 
 
 class Admin(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "admin"
     id = db.Column(db.Integer, primary_key=True)
     user_name = db.Column(db.String(50), nullable=False)
@@ -15,6 +16,7 @@ class Admin(db.Model):
 
 
 class Device(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "device"
     serial_number = db.Column(db.String(50), primary_key=True)
     device_model = db.Column(db.String(128))
@@ -22,6 +24,7 @@ class Device(db.Model):
 
 
 class Location(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "location"
     id = db.Column(db.Integer, primary_key=True)
     latitude = db.Column(db.Double())
@@ -36,6 +39,7 @@ class Location(db.Model):
 
 
 class GsmCell(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "gsm_cell"
     id = db.Column(db.Integer, primary_key=True)
     country_code = db.Column(db.Integer())
@@ -50,6 +54,7 @@ class GsmCell(db.Model):
 
 
 class WifiNetwork(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "wifi_network"
     id = db.Column(db.Integer, primary_key=True)
     mac = db.Column(db.String(128))
@@ -61,9 +66,23 @@ class WifiNetwork(db.Model):
 
 
 class IP(db.Model):
+    __bind_key__ = "lbs_db"
     __tablename__ = "ip"
     id = db.Column(db.Integer, primary_key=True)
     ip_address = db.Column(db.String(50))
     location_id = db.Column(db.Integer, ForeignKey("location.id", ondelete="CASCADE"))
     location = relationship("Location")
+    __table_args__ = {"extend_existing": True}
+
+
+class LOGS(db.Model):
+    __bind_key__ = "logs_db"
+    __tablename__ = "logs"
+    id = db.Column(db.Integer, primary_key=True)
+    module = db.Column(db.String(128))
+    log_type = db.Column(db.String(10))
+    endpoint = db.Column(db.String(128))
+    methods = db.Column(db.String(128))
+    message = db.Column(db.String(128))
+    time = db.Column(db.TIMESTAMP, default=datetime.now())
     __table_args__ = {"extend_existing": True}
