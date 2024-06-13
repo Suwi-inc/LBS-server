@@ -1,9 +1,10 @@
 from ..model.models import GsmCell
 from ..model.models import Location
+from ..utils.logger import log_request
 from .. import db
 
 
-def get_celltowers_service():
+def get_celltowers_service(request):
     cell_data = GsmCell.query.join(Location).all()
     cell_list = [
         {
@@ -25,6 +26,7 @@ def get_celltowers_service():
     response_object = {
         "cell_towers": cell_list,
     }
+    log_request(request, "user requested to view cell towers", __name__)
     return response_object, 200
 
 
