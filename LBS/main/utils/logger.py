@@ -4,9 +4,8 @@ from .. import db
 from ..model.models import LOGS
 from ..utils.route_information import RouteInfo
 
+
 # Logging module which logs errors and requests logs to the provided logging db
-
-
 class SQLAlchemyHandler(logging.Handler):
     def __init__(self):
         logging.Handler.__init__(self)
@@ -42,7 +41,6 @@ def configure_logger(module):
     if not logger.handlers:
         logger.setLevel(logging.DEBUG)
 
-        # Database handler
         db_handler = SQLAlchemyHandler()
         db_handler.setLevel(logging.DEBUG)
         db_formatter = logging.Formatter(
@@ -79,8 +77,6 @@ def log(logger, message, level, endpoint="", methods=""):
 
 
 # Function to log informational requests
-
-
 def log_request(request: RouteInfo, message, module):
     """
     Log user requests.

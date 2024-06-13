@@ -27,7 +27,7 @@ def auth_guard(role=None):
                 user_data = check_jwt()
             except Exception as e:
                 log_error(
-                    RouteInfo(route_function.__name__, route_function.__name__),
+                    RouteInfo(route_function.__name__, "DEFAULT"),
                     str(e),
                     __name__,
                 )
@@ -38,7 +38,7 @@ def auth_guard(role=None):
             if role and role not in user_data["roles"]:
 
                 log_error(
-                    RouteInfo(route_function.__name__, route_function.__name__),
+                    RouteInfo(route_function.__name__, "DEFAULT"),
                     "Invalid Role",
                     __name__,
                 )
