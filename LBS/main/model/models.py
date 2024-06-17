@@ -84,5 +84,6 @@ class LOGS(db.Model):
     endpoint = db.Column(db.String(128))
     methods = db.Column(db.String(128))
     message = db.Column(db.String(128))
+    serial_number = db.Column(db.String(50))
     time = db.Column(db.TIMESTAMP, default=datetime.now())
     __table_args__ = {"extend_existing": True}
