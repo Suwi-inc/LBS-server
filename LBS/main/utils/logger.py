@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from .. import db
 from ..model.models import LOGS
-from ..utils.route_information import RouteInfo
+from ..utils.data_objects import RouteInfo
 
 
 # Logging module which logs errors and requests logs to the provided logging db
@@ -17,6 +17,9 @@ class SQLAlchemyHandler(logging.Handler):
             message=record.msg if hasattr(record, "msg") else "",
             endpoint=record.endpoint if hasattr(record, "endpoint") else "",
             methods=record.methods if hasattr(record, "methods") else "",
+            serial_number=(
+                record.serial_number if hasattr(record, "serial_number") else ""
+            ),
             time=datetime.now(),
         )
         db.session.add(log_entry)
@@ -52,7 +55,7 @@ def configure_logger(module):
     return CustomLoggerAdapter(logger, {})
 
 
-def log(logger, message, level, endpoint="", methods=""):
+def log(logger, level, message, endpoint="", methods="", serial_number=""):
     """
     Log messages with various levels and extra context.
 
@@ -63,10 +66,10 @@ def log(logger, message, level, endpoint="", methods=""):
         endpoint (str, optional): The endpoint related to the log message. Default is an empty string.
         methods (str, optional): The HTTP methods related to the log message. Default is an empty string.
     """
-    extra = {"endpoint": endpoint, "methods": methods}
+    extra = {"endpoint": endpoint, "methods": methods, "serial_number": serial_number}
     if level == "info":
         logger.info(message, extra=extra)
-    elif level == "warn":
+    elif level == "warning":
         logger.warning(message, extra=extra)
     elif level == "error":
         logger.error(message, extra=extra)
@@ -76,43 +79,18 @@ def log(logger, message, level, endpoint="", methods=""):
         logger.error(message, extra=extra)
 
 
-# Function to log informational requests
-def log_request(request: RouteInfo, message, module):
+# Function to log errors and requests
+def log_action(module, message, endpoint, methods, serial_number, level="error"):
     """
-    Log user requests.
+    Log errors, expetions and requests.
 
     Args:
-        request (RouteInfo): The request information which includes the endpoint route and the methods.
-        message (str): The message to be logged.
-        module (str) : The module or file where this action occured
-        level (str): The level of the log (e.g., "info", "warn", "error", "critical").
-        endpoint (str, optional): The endpoint related to the log message. Default is an empty string.
-        methods (str, optional): The HTTP methods related to the log message. Default is an empty string.
-    """
-    logger = configure_logger(module)
-    log(logger, message, "info", request.endpoint, request.methods)
-
-
-# Function to log errors
-def log_error(request: RouteInfo, error, module, level="error"):
-    """
-    Log errors and expetions.
-
-    Args:
-        request (RouteInfo): The request information which includes the endpoint (str)  and the methods (str).
-        error (str): The error to be logged.
+        endpoint (str) : The request endpoint.
+        methods (str) : The request methods.
+        serial_number (str) : The device's identifier.
+        message (str): The error or messageto be logged.
         module (str) : The module or file where this error occured
-        level (str): The level of the log (e.g."warn", "error" or "critical").
+        level (str): The level of the log (e.g."info", "warning", "error" or "critical"). Default is error.
     """
     logger = configure_logger(module)
-    log(logger, error, level, request.endpoint, request.methods)
-
-
-# Function to log warnings
-def log_warning(request: RouteInfo, error, module):
-    log_error(request, error, module, "warning")
-
-
-# Function to log critical errors
-def log_critical(request: RouteInfo, error, module):
-    log_error(request, error, module, "critical")
+    log(logger, level, message, endpoint, methods, serial_number)
