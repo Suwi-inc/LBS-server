@@ -72,5 +72,6 @@ log_type VARCHAR (10),
 endpoint VARCHAR (128),
 methods VARCHAR (128),
 message VARCHAR,
+serial_number VARCHAR,
 time TIMESTAMP
 );
