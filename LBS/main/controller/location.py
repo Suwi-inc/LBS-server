@@ -88,8 +88,8 @@ def get_location():
     data = json.loads(request.data.decode("utf-8").replace("json=", ""))
 
     if "gsm_cells" not in data:
-        return jsonify({"error": "Not enough data provided"}), 400
-
+        return jsonify({"error": "Not enough data provided"}), 
+      
     gsm_cell_locations: List[(Location, float)] = []
 
     for cell in data["gsm_cells"]:
