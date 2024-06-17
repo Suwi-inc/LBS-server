@@ -1,7 +1,18 @@
 def validate_device_data(data):
-    if "device_model" not in data or "serial_number" not in data:
-        return False
-    return True
+    required_fields = {
+        "device_model": str,
+        "serial_number": str,
+    }
+    if not isinstance(data, dict):
+        raise TypeError("Data should be a dictionary.")
+
+    for field, field_type in required_fields.items():
+        if field not in data:
+
+            raise ValueError(f"Missing '{field}' in device data.")
+        if not isinstance(data[field], field_type):
+
+            raise TypeError(f"Field '{field}' should be of type {field_type.__name__}.")
 
 
 def validate_cell_tower_data(data):
