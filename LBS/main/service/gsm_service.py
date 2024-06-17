@@ -1,11 +1,11 @@
 from ..model.models import GsmCell
 from ..model.models import Location
-from ..utils.logger import log_request
-from ..utils.route_information import RouteInfo
+from ..utils.logger import log_action
+from ..utils.data_objects import RouteInfo
 from .. import db
 
 
-def get_celltowers_service(request: RouteInfo):
+def get_celltowers_service():
     cell_data = GsmCell.query.join(Location).all()
     cell_list = [
         {
@@ -27,7 +27,7 @@ def get_celltowers_service(request: RouteInfo):
     response_object = {
         "cell_towers": cell_list,
     }
-    log_request(request, "user requested to view cell towers", __name__)
+
     return response_object, 200
 
 
@@ -51,7 +51,7 @@ def add_cell_towers_service(data):
                 lac=cell_tower["lac"],
                 signal_strength=cell_tower["signal_strength"],
                 age=cell_tower["age"],
-                location_id=cell_tower["location_id"],
+                # location_id=cell_tower.get("location_id"),
             )
             db.session.add(new_cell_tower)
     db.session.commit()
