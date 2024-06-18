@@ -6,16 +6,21 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - "DB_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"  #prod (docker run)
-      #- "DB_URI=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${REMOTE_IP}:${REMOTE_DB_PORT}/${POSTGRES_DB}" #dev (manual run)
+      # Both the api service and the database
+      - "DB_URI=postgresql+psycopg2://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST_LOCAL_DOCKER}:${DATABASE_PORT_LOCAL_DOCKER}/${DATABASE_LBS_NAME}"
+      - "LOGS_DB=postgresql+psycopg2://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST_LOCAL_DOCKER}:${DATABASE_PORT_LOCAL_DOCKER}/${DATABASE_LOGGER_NAME}"
+
+      #or for local docker (API locally, the db remotely)
+      # - "DB_URI=postgresql+psycopg2://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST_REMOTE}:${DATABASE_PORT_REMOTE}/${DATABASE_LBS_NAME}"
+      # - "LOGS_DB=postgresql+psycopg2://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST_REMOTE}:${DATABASE_PORT_REMOTE}/${DATABASE_LOGGER_NAME}"
     depends_on:
       - db
   db:
     image: postgres:15.7
     environment:
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${DATABASE_USER}"
+      POSTGRES_PASSWORD: "${DATABASE_PASSWORD}"
+      POSTGRES_DB: "${DATABASE_LBS_NAME}"
     volumes:
       - .:/docker-entrypoint-initdb.d
     ports:
