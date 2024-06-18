@@ -4,46 +4,34 @@
 
 ## Build and Run
 
-### Step 1. Clone the github repo to your preferred directory
+### Step 1. Clone the github repo
 ```sh
 git clone https://github.com/Suwi-inc/LBS-server.git
 cd LBS-server
 ```
 
-### Step 2. Install Docker if it is not installed
-https://docs.docker.com/engine/install/
+### Step 2. Install [Docker](https://docs.docker.com/engine/install/)
 
-### Step 3: Create .env file
+### Step 3: Create a .env file in the root of the project
 
-The project depends on some config that it expects to be provided from an .env file at the `LBS` directory.
-```sh
-cd LBS
+```.env
+POSTGRES_USER={username}
+POSTGRES_PASSWORD={password}
+POSTGRES_DB={database}
+SECRET_KEY={string}
+REMOTE_IP={host}
+REMOTE_DB_PORT={port}
+DB_URI=postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}
 ```
 
-Here is the expected content of the file:
-```sh
-SECRET_KEY='your_auth_secret'
-```
-
-# Step 4: Define environment variables
-```sh
-export POSTGRES_USER=postgres
-export POSTGRES_PASSWORD=pass
-export POSTGRES_DB=postgres
-export SECRET_KEY=SECRET_KEY
-export REMOTE_DB_PORT=5433
-```
-
-### Step 5: Run docker compose
-Run this command when you update the server
+### Step 4: Run docker compose
 ```sh
 docker compose up --build -d
 ```
 
-## Stop
-```sh
-docker compose down
-```
+### Step 4a: TBD
+
+
 
 # Project File structure
 
