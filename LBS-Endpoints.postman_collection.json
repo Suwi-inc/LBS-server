@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"user_name\":\"Admin Example\",\r\n    \"password\": \"bad_password\"\r\n}",
+					"raw": "{\r\n    \"user_name\":\"\",\r\n    \"password\": \"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +41,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"user_name\":\"Admin Example\",\r\n    \"password\":\"bad_password\"\r\n}",
+					"raw": "{\r\n    \"user_name\":\"\",\r\n    \"password\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -107,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"device_model\":\"device example\",\r\n    \"serial_number\":\"abcdef5\"\r\n}",
+					"raw": "{\r\n    \"device_model\":\"\",\r\n    \"serial_number\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -134,7 +134,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"device_model\":\"model 1\",\r\n    \"serial_number\":\"abcdef5\"\r\n}",
+					"raw": "{\r\n    \"device_model\":\"\",\r\n    \"serial_number\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -174,7 +174,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "",
+					"raw": "{\r\n    \"device_model\":\"\",\r\n    \"serial_number\":\"\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -216,7 +216,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkZXZpY2UiOnsiZGV2aWNlX21vZGVsIjoibW9kZWwgMSIsInNlcmlhbF9udW1iZXIiOiJhYmNkZWY1In0sInJvbGVzIjpbInVzZXIiXSwiZXhwIjoxNzE4NjUyNjMyLjMyMjAzOH0.gTjMud7eTVVkFiYTl4Db6aPTjBHwcw8FR5Nmz1z6sGE",
 							"type": "string"
 						}
 					]
@@ -248,7 +248,14 @@
 			"name": "Get location based on Cell Tower Data",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],

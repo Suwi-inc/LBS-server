@@ -18,3 +18,18 @@ class WiFiNetwork:
 class IPAddress:
     def __init__(self, address_v4):
         self.address_v4 = address_v4
+
+
+class Device:
+    def __init__(self, device_model="default", serial_number="default"):
+        self.device_model = device_model
+        self.serial_number = serial_number
+
+
+class RouteInfo:
+    def __init__(self, endpoint, methods):
+        self.endpoint = endpoint
+        self.methods = methods
+
+    def __repr__(self):
+        return f"<endpoint={self.endpoint}, methods={self.methods}>"

@@ -62,3 +62,16 @@ ON wifi_network(location_id);
 CREATE INDEX IF NOT EXISTS ip_location
 ON ip(location_id);
 
+-------- LOGGING DB --------
+CREATE DATABASE lbs_logs WITH OWNER = {db_owner};
+
+CREATE TABLE IF NOT EXISTS logs
+(id SERIAL PRIMARY KEY,
+module VARCHAR(128),
+log_type VARCHAR (10),
+endpoint VARCHAR (128),
+methods VARCHAR (128),
+message VARCHAR,
+serial_number VARCHAR,
+time TIMESTAMP
+);
