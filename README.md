@@ -1,45 +1,39 @@
 # LBS-server
 
 # Installation Guide
-## Build and Run
-### Step 1. Clone the github repo to your prefered directory using
-```
-git clone https://github.com/Suwi-inc/LBS-server.git
-``` 
-### Step 2. Inside the repository directory install the project dependencies
-```sh
-poetry install
-```
-### Step 3: Create .env
 
-The project depends on some config that it expects to be provided from a .env file at the `LBS` directory. 
+## Build and Run
+
+### Step 1. Clone the github repo
 ```sh
-cd LBS
-``` 
-Here is the expected content of the file
-```env
-DB_URI='Postgres_DB_connect_string_here'
-SECRET_KEY='your_auth_secret'
+git clone https://github.com/Suwi-inc/LBS-server.git
+cd LBS-server
 ```
-### Step 4: Run Migrations
-Inside the `LBS` directory run
-```sh
-poetry run flask db init
-poetry run flask db migrate
-poetry run flask db upgrade
+
+### Step 2. Install [Docker](https://docs.docker.com/engine/install/)
+
+### Step 3: Create a .env file in the root of the project
+
+```.env
+POSTGRES_USER={username}
+POSTGRES_PASSWORD={password}
+POSTGRES_DB={database}
+SECRET_KEY={string}
+REMOTE_IP={host}
+REMOTE_DB_PORT={port}
+DB_URI=postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}
 ```
-### Step 5: Run the application
-Within the `LBS` directory
-```sh
-poetry run flask --app app run   
-```
-# Build and Run on Docker
-Required docker version: >=4.25.2
-Before running, place an .env file in the root directory
+
+### Step 4: Run docker compose
 ```sh
 docker compose up --build -d
 ```
-# Project File structure 
+
+### Step 4a: TBD
+
+
+
+# Project File structure
 
 ```
 LBS-Server
@@ -47,53 +41,52 @@ LBS-Server
 │   .gitignore
 │   .pre-commit-config.yaml
 │   docker-compose.yml
+|   LBS-Endpoints.postman_collection.json
 │   README.md
 │   ruff.toml
-│   scripttorun.txt
-│   test_backup.sql
-│  
+│
 ├───.github
 │   └───workflows
-│           docker-image.yml
-│           
+│       └───docker-image.yml
+│
 └───LBS
-    │   config.py                                           # place our config here to run locally
+    │   .env
     │   app.py
     │   Dockerfile
+    |   poetry.lock
+    |   pyproject.toml
     │   requirements.txt
-    │   
-    ├───main
-    │   │   DataObjects.py
-    │   │   __init__.py
-    │   │   
-    │   ├───controller
-    │   │   │   admin_route.py
-    │   │   │   gsm_cell.py
-    │   │   │   location.py
-    │   │   │   wifi_network.py
-    │   │   │   __init__.py
-    │   │   │   
-    │   │   
-    │   │           
-    │   ├───model
-    │   │   │   models.py
-    │   │   │   
-    │   │   └───__pycache__
-    │   │           models.cpython-311.pyc
-    │   │           
-    │   ├───schemas
-    │   │       DataBaseSchema.SQL
-    │   │       
-    │   ├───service
-    │   │   │   admin_service.py
-    │   │   │   gsm_service.py
-    │   │   │   wifi_service.py
-    │   │   │   
-    │   │   └───__pycache__
-    │   │           admin_service.cpython-311.pyc
-    │   │           gsm_service.cpython-311.pyc
-    │   │           wifi_service.cpython-311.pyc
-    │   │           
-    │   ├───utils
-            │   data_validator.py
+    │
+    └───main
+        │   __init__.py
+        │   DataObjects.py
+        │
+        ├───auth
+        |   |   __init__.py
+        |   |   auth_guard.py
+        |   |   auth_provider.py
+        |   └───jwt_handler.py
+        │
+        ├───controller
+        │   │   __init__.py
+        │   │   admin_route.py
+        │   │   device_route.py
+        │   │   gsm_cell.py
+        │   │   location.py
+        │   └───wifi_network.py
+        │
+        ├───model
+        │   └───models.py
+        │
+        ├───schemas
+        │   └───DataBaseSchema.SQL
+        │
+        ├───service
+        │   │   admin_service.py
+        │   │   device_service.py
+        │   │   gsm_service.py
+        │   └───wifi_service.py
+        │
+        └───utils
+            └───data_validator.py
 ```
