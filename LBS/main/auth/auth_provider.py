@@ -2,9 +2,7 @@ from ..model.models import Admin, Device
 
 
 def authenticate_device(device, serial):
-    existing_device = Device.query.filter_by(
-        serial_number=serial, device_model=device
-    ).first()
+    existing_device = Device.query.filter_by(serial_number=serial, device_model=device).first()
     if existing_device:
         return {
             "device": {

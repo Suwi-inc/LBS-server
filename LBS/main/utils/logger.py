@@ -1,8 +1,8 @@
 import logging
 from datetime import datetime
+
 from .. import db
 from ..model.models import LOGS
-from ..utils.data_objects import RouteInfo
 
 
 # Logging module which logs errors and requests logs to the provided logging db
@@ -17,9 +17,7 @@ class SQLAlchemyHandler(logging.Handler):
             message=record.msg if hasattr(record, "msg") else "",
             endpoint=record.endpoint if hasattr(record, "endpoint") else "",
             methods=record.methods if hasattr(record, "methods") else "",
-            serial_number=(
-                record.serial_number if hasattr(record, "serial_number") else ""
-            ),
+            serial_number=(record.serial_number if hasattr(record, "serial_number") else ""),
             time=datetime.now(),
         )
         db.session.add(log_entry)
@@ -46,9 +44,7 @@ def configure_logger(module):
 
         db_handler = SQLAlchemyHandler()
         db_handler.setLevel(logging.DEBUG)
-        db_formatter = logging.Formatter(
-            "%(name)s %(asctime)s %(levelname)s %(message)s"
-        )
+        db_formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
         db_handler.setFormatter(db_formatter)
         logger.addHandler(db_handler)
 
