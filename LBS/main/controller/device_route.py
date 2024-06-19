@@ -1,11 +1,11 @@
-from flask import Blueprint, jsonify, request
 import json
+
+from flask import Blueprint, jsonify, request
+
 from ..service.device_service import add_device_service, auth_device_service
+from ..utils.data_objects import RouteInfo
 from ..utils.data_validator import validate_device_data
 from ..utils.logger import log_action
-
-from ..utils.data_objects import RouteInfo
-
 
 device = Blueprint("device", __name__)
 

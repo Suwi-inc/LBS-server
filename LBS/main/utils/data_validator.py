@@ -8,10 +8,8 @@ def validate_device_data(data):
 
     for field, field_type in required_fields.items():
         if field not in data:
-
             raise ValueError(f"Missing '{field}' in device data.")
         if not isinstance(data[field], field_type):
-
             raise TypeError(f"Field '{field}' should be of type {field_type.__name__}.")
 
 
@@ -34,6 +32,4 @@ def validate_cell_tower_data(data):
             if field not in cell_tower:
                 raise ValueError(f"Missing '{field}' in cell tower data.")
             if not isinstance(cell_tower[field], field_type):
-                raise TypeError(
-                    f"Field '{field}' should be of type {field_type.__name__}."
-                )
+                raise TypeError(f"Field '{field}' should be of type {field_type.__name__}.")

@@ -2,7 +2,7 @@ FROM python:3.12.2-alpine
 
 WORKDIR /LBS
 
-RUN pip install poetry
+RUN pip install --no-cache-dir poetry==1.8.3
 
 COPY ./pyproject.toml .
 
