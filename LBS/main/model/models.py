@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
@@ -31,9 +31,11 @@ class Location(db.Model):
     longitude = db.Column(db.Double())
     location_precision = db.Column(db.Integer())
     location_type = db.Column(db.String(10))
-    created_on = db.Column(db.TIMESTAMP, default=datetime.utcnow)
+    created_on = db.Column(db.TIMESTAMP, default=datetime.now(timezone.utc))
     updated_on = db.Column(
-        db.TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow
+        db.TIMESTAMP,
+        default=datetime.now(timezone.utc),
+        onupdate=datetime.now(timezone.utc),
     )
     __table_args__ = {"extend_existing": True}
 
@@ -65,7 +67,7 @@ class WifiNetwork(db.Model):
     __table_args__ = {"extend_existing": True}
 
 
-class IP(db.Model):
+class Ip(db.Model):
     __bind_key__ = "lbs_db"
     __tablename__ = "ip"
     id = db.Column(db.Integer, primary_key=True)
@@ -75,15 +77,28 @@ class IP(db.Model):
     __table_args__ = {"extend_existing": True}
 
 
-class LOGS(db.Model):
+class Log(db.Model):
     __bind_key__ = "logs_db"
-    __tablename__ = "logs"
+    __tablename__ = "log"
     id = db.Column(db.Integer, primary_key=True)
     module = db.Column(db.String(128))
     log_type = db.Column(db.String(10))
     endpoint = db.Column(db.String(128))
     methods = db.Column(db.String(128))
     message = db.Column(db.String(128))
-    serial_number = db.Column(db.String(50))
-    time = db.Column(db.TIMESTAMP, default=datetime.now())
+    device_id = db.Column(db.String(50))
+    time = db.Column(db.TIMESTAMP, default=datetime.now(timezone.utc))
+    __table_args__ = {"extend_existing": True}
+
+
+class Position(db.Model):
+    __bind_key__ = "logs_db"
+    __tablename__ = "position"
+    id = db.Column(db.Integer, primary_key=True)
+    latitude = db.Column(db.Double())
+    longitude = db.Column(db.Double())
+    location_precision = db.Column(db.Integer())
+    position_time = db.Column(db.TIMESTAMP, default=datetime.now(timezone.utc))
+    log_id = db.Column(db.Integer, ForeignKey("log.id", ondelete="CASCADE"))
+    log = relationship("Log")
     __table_args__ = {"extend_existing": True}
