@@ -261,7 +261,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"gsm_cells\": [\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10686,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -60\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10684,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -50\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 2013,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -10\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"serial_number\":\"\",\r\n    \"device_model\":\"\",\r\n    \"gsm_cells\": [\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10686,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -60\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10684,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -50\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 2013,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -10\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
