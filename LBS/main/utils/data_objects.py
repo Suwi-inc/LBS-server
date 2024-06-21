@@ -33,3 +33,11 @@ class RouteInfo:
 
     def __repr__(self):
         return f"<endpoint={self.endpoint}, methods={self.methods}>"
+
+
+class LocationInfo:
+    def __init__(self, latitude, longitude, precision, time):
+        self.latitude = latitude
+        self.longitude = longitude
+        self.precision = precision
+        self.time = time
