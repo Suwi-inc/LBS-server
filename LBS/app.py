@@ -8,6 +8,7 @@ from main.controller.wifi_network import wifi
 
 app = create_app()
 app.debug = True
+app.url_map.strict_slashes = False
 migrate = Migrate(app, db)
 
 app.register_blueprint(admin, url_prefix="/admin")

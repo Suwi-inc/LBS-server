@@ -1,3 +1,4 @@
+from datetime import datetime, timezone
 import json
 import logging
 import math
@@ -9,6 +10,7 @@ from .. import db
 from ..model.models import GsmCell, Location
 from ..auth.auth_guard import auth_guard
 from ..utils.logger import log_action
+from ..utils.data_objects import LocationInfo
 
 location = Blueprint("location", __name__)
 
@@ -83,13 +85,19 @@ def get_location():
         print(json.loads(request.data.decode("utf-8").replace("json=", "")))
     except Exception:
         err = "Could not parse request as JSON"
-        # log_action()
         abort(400, err)
     data = json.loads(request.data.decode("utf-8").replace("json=", ""))
-
+    log_action(
+        __name__,
+        "Location Request",
+        request.endpoint,
+        request.method,
+        data.get("serial_number"),
+        "info",
+    )
     if "gsm_cells" not in data:
-        return jsonify({"error": "Not enough data provided"}), 
-      
+        return (jsonify({"error": "Not enough data provided"}),)
+
     gsm_cell_locations: List[(Location, float)] = []
 
     for cell in data["gsm_cells"]:
@@ -121,7 +129,7 @@ def get_location():
     # if len(data["gsm_cells"]) == 2:
     #     abort(400, f'Need at least 2 cell towers to determine location, got 2')
 
-    if len(data["gsm_cells"]) == 1 or 2:
+    if len(data["gsm_cells"]) in [1, 2]:
         location_res = {
             "latitude": gsm_cell_locations[0][0].latitude,
             "longitude": gsm_cell_locations[0][0].longitude,
@@ -130,6 +138,22 @@ def get_location():
             "altitude_precision": -1,
             "type": "GSM",
         }
+        
+        log_action(
+            __name__,
+            str(data),
+            request.endpoint,
+            request.method,
+            data.get("serial_number"),
+            "info",
+            LocationInfo(
+                location_res["latitude"],
+                location_res["longitude"],
+                location_res["precision"],
+                datetime.now(timezone.utc),
+            ),
+        )
+        
         return jsonify({"position": location_res}), 200
 
     loc_tuple = triangulate(gsm_cell_locations)
@@ -141,4 +165,19 @@ def get_location():
         "altitude_precision": -1,
         "type": "GSM",
     }
+    # Successful Location request log
+    log_action(
+        __name__,
+        str(data),
+        request.endpoint,
+        request.method,
+        data.get("serial_number"),
+        "info",
+        LocationInfo(
+            location_res["latitude"],
+            location_res["longitude"],
+            location_res["precision"],
+            datetime.now(timezone.utc),
+        ),
+    )
     return jsonify({"position": location_res}), 200

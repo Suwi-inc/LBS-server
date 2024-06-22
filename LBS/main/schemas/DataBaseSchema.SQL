@@ -65,13 +65,24 @@ ON ip(location_id);
 -------- LOGGING DB --------
 CREATE DATABASE lbs_logs WITH OWNER = {db_owner};
 
-CREATE TABLE IF NOT EXISTS logs
+CREATE TABLE IF NOT EXISTS log
 (id SERIAL PRIMARY KEY,
 module VARCHAR(128),
 log_type VARCHAR (10),
 endpoint VARCHAR (128),
 methods VARCHAR (128),
 message VARCHAR,
-serial_number VARCHAR,
+device_id VARCHAR,
 time TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS position
+(
+    id SERIAL PRIMARY KEY,
+    latitude NUMERIC(10,7),
+    longitude NUMERIC(10,7),
+    location_precision INT,
+    position_time TIMESTAMP,
+    log_id INT,
+    FOREIGN KEY (log_id) REFERENCES log(id) ON DELETE CASCADE
 );
