@@ -138,6 +138,22 @@ def get_location():
             "altitude_precision": -1,
             "type": "GSM",
         }
+        
+        log_action(
+            __name__,
+            str(data),
+            request.endpoint,
+            request.method,
+            data.get("serial_number"),
+            "info",
+            LocationInfo(
+                location_res["latitude"],
+                location_res["longitude"],
+                location_res["precision"],
+                datetime.now(timezone.utc),
+            ),
+        )
+        
         return jsonify({"position": location_res}), 200
 
     loc_tuple = triangulate(gsm_cell_locations)
