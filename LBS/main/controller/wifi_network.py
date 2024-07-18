@@ -1,8 +1,7 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint
 
-from ..service.wifi_service import get_wifinetworks_service
-from ..utils.data_validator import validate_device_data
 from ..auth.auth_guard import auth_guard
+from ..service.wifi_service import get_wifinetworks_service
 
 wifi = Blueprint("wifi", __name__)
 

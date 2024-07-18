@@ -1,8 +1,5 @@
-from ..model.models import GsmCell
-from ..model.models import Location
-from ..utils.logger import log_action
-from ..utils.data_objects import RouteInfo
 from .. import db
+from ..model.models import GsmCell, Location
 
 
 def get_celltowers_service():
@@ -32,7 +29,6 @@ def get_celltowers_service():
 
 
 def add_cell_towers_service(data):
-
     for cell_tower in data["cell_towers"]:
         # Check if the cell tower already exists in the database
         existing_cell_tower = GsmCell.query.filter_by(

@@ -1,6 +1,7 @@
-from os import getenv
-import jwt
 from datetime import datetime, timedelta
+from os import getenv
+
+import jwt
 
 
 def generate_jwt(payload, lifetime=None):
