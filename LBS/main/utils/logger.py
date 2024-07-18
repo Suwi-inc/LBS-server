@@ -1,8 +1,9 @@
 import logging
 from datetime import datetime, timezone
+
+from .. import db
 from ..model.models import Log, Position
 from ..utils.data_objects import LocationInfo
-from .. import db
 
 
 # Logging module which logs errors and requests logs to the provided logging db
@@ -54,9 +55,7 @@ def configure_logger(module):
 
         db_handler = SQLAlchemyHandler()
         db_handler.setLevel(logging.DEBUG)
-        db_formatter = logging.Formatter(
-            "%(name)s %(asctime)s %(levelname)s %(message)s"
-        )
+        db_formatter = logging.Formatter("%(name)s %(asctime)s %(levelname)s %(message)s")
         db_handler.setFormatter(db_formatter)
         logger.addHandler(db_handler)
 

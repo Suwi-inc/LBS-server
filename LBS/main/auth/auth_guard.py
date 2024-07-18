@@ -1,6 +1,7 @@
-from flask import request, jsonify
-from .jwt_handler import decode_jwt
+from flask import jsonify, request
+
 from ..utils.logger import log_action
+from .jwt_handler import decode_jwt
 
 
 def check_jwt():
@@ -13,7 +14,7 @@ def check_jwt():
     try:
         return decode_jwt(jwt)
     except Exception as e:
-        raise Exception(f"Invalid access token: {e}")
+        raise Exception(f"Invalid access token: {e}") from e
 
 
 def auth_guard(role=None):

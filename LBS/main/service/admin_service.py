@@ -1,11 +1,11 @@
 from flask import jsonify
 
 from .. import db
+from ..auth.auth_provider import authenticate_admin
+from ..auth.jwt_handler import generate_jwt
 from ..model.models import Admin
 from ..utils.data_objects import RouteInfo
 from ..utils.logger import log_action
-from ..auth.auth_provider import authenticate_admin
-from ..auth.jwt_handler import generate_jwt, decode_jwt
 
 
 def create_admin(data, route: RouteInfo):
@@ -42,9 +42,7 @@ def auth_admin_service(data, route: RouteInfo):
     if not user_data:
         return jsonify({"message": "Invalid credentials", "status": 400}), 400
 
-    token = generate_jwt(
-        payload=user_data, lifetime=60
-    )  # <--- generates a JWT with valid within 1 hour by now
+    token = generate_jwt(payload=user_data, lifetime=60)  # <--- generates a JWT with valid within 1 hour by now
     log_action(
         __name__,
         "Admin was succefully authenticated",

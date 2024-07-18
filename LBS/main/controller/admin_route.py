@@ -1,7 +1,9 @@
-from flask import Blueprint, request
 import json
-from ..service.admin_service import create_admin, get_admins, auth_admin_service
+
+from flask import Blueprint, request
+
 from ..auth.auth_guard import auth_guard
+from ..service.admin_service import auth_admin_service, create_admin, get_admins
 from ..utils.data_objects import RouteInfo
 
 admin = Blueprint("admin", __name__)
