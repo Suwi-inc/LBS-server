@@ -10,6 +10,7 @@ from .. import db
 from ..model.models import GsmCell, Location
 from ..utils.data_objects import LocationInfo
 from ..utils.logger import log_action
+from ..auth.auth_guard import auth_guard
 
 location = Blueprint("location", __name__)
 
