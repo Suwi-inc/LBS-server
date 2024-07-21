@@ -42,7 +42,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '22'
 
       - name: Install Newman
         run: npm install -g newman
