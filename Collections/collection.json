@@ -7,22 +7,33 @@
 	},
 	"item": [
 		{
-			"name": "Authenticate Device Test",
+			"name": "Register Device Test",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Response has token\", function () {\r",
-							"    pm.response.to.have.jsonBody(\"token\");\r",
-							"});\r",
 							"\r",
-							"// Save the token to environment variable\r",
-							"var jsonData = pm.response.json();\r",
-							"pm.environment.set(\"token\", jsonData.token);\r",
+							"pm.test(\"Status code is 201\", function ()\r",
+							" {pm.response.to.have.status(201);});\r",
+							" \r",
+							"pm.environment.set(\"isDeviceRegistered\", \"true\");\r",
+							"    \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"var skip = pm.environment.get(\"isDeviceRegistered\");\r",
+							"if (skip === \"true\") {\r",
+							"    pm.execution.skipRequest();\r",
+							"    }\r",
 							""
 						],
 						"type": "text/javascript",
@@ -35,7 +46,68 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"device_model\":\"testing\",\r\n    \"serial_number\":\"qwerty\"\r\n}",
+					"raw": "{\r\n    \"device_model\":{{device_model}},\r\n    \"serial_number\":{{serial_number}}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/device/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"device",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate Device Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response has token\", function () {\r",
+							"    pm.response.to.have.jsonBody(\"token\");\r",
+							"});\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"token\", jsonData.token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device_model\":{{device_model}},\r\n    \"serial_number\":{{serial_number}}\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -65,9 +137,22 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
+							"pm.test(\"Response has location position\", function () {\r",
+							"    pm.response.to.have.jsonBody(\"position\");\r",
+							"});\r",
 							"pm.test(\"Response time is less than 5000ms\", function () {\r",
 							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
 							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
 							""
 						],
 						"type": "text/javascript",
@@ -90,7 +175,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"device_model\":\"testing\",\r\n    \"serial_number\":\"qwerty\",\r\n    \"gsm_cells\": [\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10686,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -60\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10684,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -50\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 2013,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -10\r\n        }\r\n    ]\r\n}",
+					"raw": "{\r\n    \"device_model\":{{device_model}},\r\n    \"serial_number\":{{serial_number}},\r\n    \"gsm_cells\": [\r\n        {\r\n            \"cell_id\": 3151,\r\n            \"country_code\": 250,\r\n            \"lac\": 20215,\r\n            \"operator_id\": 1, \r\n            \"signal_strength\": 255\r\n        },\r\n        {\r\n            \"cell_id\": 3152,\r\n            \"country_code\": 250,\r\n            \"lac\": 20215,\r\n            \"operator_id\": 1, \r\n            \"signal_strength\": 134\r\n        },\r\n        {\r\n            \"cell_id\": 3153,\r\n            \"country_code\": 250,\r\n            \"lac\": 20215,\r\n            \"operator_id\": 1, \r\n            \"signal_strength\": 25\r\n        }\r\n    ]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
