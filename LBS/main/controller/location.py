@@ -10,6 +10,7 @@ from .. import db
 from ..model.models import GsmCell, Location
 from ..utils.data_objects import LocationInfo
 from ..utils.logger import log_action
+from ..auth.auth_guard import auth_guard
 
 location = Blueprint("location", __name__)
 
@@ -22,13 +23,19 @@ location = Blueprint("location", __name__)
 # 3. Does not account for altitude at all
 # 4. Impossible to know real precision
 # 5. Ignores abundance of data in the database
-def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[Tuple[float, float], int]:
-    locations: List[Tuple[float, float]] = [(t[0].latitude, t[0].longitude) for t in gsmtowers]
+def triangulate(
+    gsmtowers: List[Tuple[Location, float]]
+) -> Tuple[Tuple[float, float], int]:
+    locations: List[Tuple[float, float]] = [
+        (t[0].latitude, t[0].longitude) for t in gsmtowers
+    ]
     strength: List[float] = [t[1] for t in gsmtowers]
     min_strength: float = min(strength)
     strength_shifted: List[float] = [(r - min_strength) for r in strength]
 
-    locations_weighted: List[Tuple[float, float]] = [(i * s, j * s) for (i, j), s in zip(locations, strength_shifted)]
+    locations_weighted: List[Tuple[float, float]] = [
+        (i * s, j * s) for (i, j), s in zip(locations, strength_shifted)
+    ]
     final_location: Tuple[float, float] = (
         math.fsum([i for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
         math.fsum([j for (i, j) in locations_weighted]) / math.fsum(strength_shifted),
@@ -38,7 +45,9 @@ def triangulate(gsmtowers: List[Tuple[Location, float]]) -> Tuple[Tuple[float, f
     return final_location, round(precision)
 
 
-def calculate_spherical_distance(point1: Tuple[float, float], point2: Tuple[float, float]) -> float:
+def calculate_spherical_distance(
+    point1: Tuple[float, float], point2: Tuple[float, float]
+) -> float:
     RADIUS: float = 6371000.0  # Earth radius in m
 
     lat1, lon1 = math.radians(point1[0]), math.radians(point1[1])
@@ -47,7 +56,10 @@ def calculate_spherical_distance(point1: Tuple[float, float], point2: Tuple[floa
     dlat = lat2 - lat1
     dlon = lon2 - lon1
 
-    a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    a = (
+        math.sin(dlat / 2) ** 2
+        + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    )
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
 
     return RADIUS * c
@@ -66,7 +78,7 @@ def add_new_gsm_cell(cell):
 
 
 @location.route("/", methods=["POST"])
-# @auth_guard()
+@auth_guard()
 def get_location():
     logging.basicConfig(level=logging.DEBUG)
     try:
@@ -103,9 +115,13 @@ def get_location():
             abort(500, "Adding new tower is not yet implemented")
 
         gsm_cell: GsmCell = gsm_cell[0]._mapping["GsmCell"]
-        location: List[Location] = db.session.execute(db.select(Location).where(Location.id == gsm_cell.location_id)).all()
+        location: List[Location] = db.session.execute(
+            db.select(Location).where(Location.id == gsm_cell.location_id)
+        ).all()
 
-        assert len(location) == 1, f"We do not have location for cell tower {gsm_cell.cell_id}, strange"
+        assert (
+            len(location) == 1
+        ), f"We do not have location for cell tower {gsm_cell.cell_id}, strange"
         location: Location = location[0]._mapping["Location"]
 
         gsm_cell_locations.append((location, cell["signal_strength"]))
