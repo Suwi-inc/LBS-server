@@ -13,9 +13,27 @@
 			"value": "false",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000/",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "serial_number",
+			"value": "",
+			"type": "default",
+			"enabled": false
+		},
+		{
+			"key": "device_model",
+			"value": "",
+			"type": "default",
+			"enabled": false
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-07-21T16:52:14.781Z",
+	"_postman_exported_at": "2024-07-21T18:42:12.982Z",
 	"_postman_exported_using": "Postman/11.4.0"
 }
