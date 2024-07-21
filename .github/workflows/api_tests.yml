@@ -49,7 +49,7 @@ jobs:
 
       - name: Run Postman tests
         run: |
-          newman run Collections/collection.json -e Collections/environment.json --env-var base_url=http://localhost:5000 --env-var serial_number=${{ secrets.SERIAL_NUMBER }} --env-var device_model=${{secrets.DEVICE_MODEL}}
+          newman run Collections/collection.json -e Collections/environment.json --env-var base_url=http://localhost:5000
  
 
       - name: Clean up Docker Compose
