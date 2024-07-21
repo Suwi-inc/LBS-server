@@ -1,0 +1,169 @@
+{
+	"info": {
+		"_postman_id": "be22bc3f-9b9e-4e04-b399-a198c16eeade",
+		"name": "LBS API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19593119"
+	},
+	"item": [
+		{
+			"name": "Register Device Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"   pm.response.to.have.status(201);;\r",
+							"});\r",
+							"pm.environment.set(\"isDeviceRegistered\", \"true\");"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							"if (pm.environment.get(\"isDeviceRegistered\") === \"true\") {\r",
+							"    pm.execution.skipRequest();\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device_model\":\"device_test\",\r\n    \"serial_number\":\"ABCDEF12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/device/register",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"device",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate Device Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response has token\", function () {\r",
+							"    pm.response.to.have.jsonBody(\"token\");\r",
+							"});\r",
+							"\r",
+							"// Save the token to environment variable\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"token\", jsonData.token);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"device_model\":\"device_test\",\r\n    \"serial_number\":\"ABCDEF12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/device/auth",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"device",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get location based on Cell Tower Data Test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Response time is less than 5000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"serial_number\":\"ABCDEF12345\",\r\n    \"device_model\":\"device_test\",\r\n    \"gsm_cells\": [\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10686,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -60\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 10684,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -50\r\n        },\r\n        {\r\n            \"age\": 0,\r\n            \"cell_id\": 2013,\r\n            \"country_code\": 250,\r\n            \"lac\": 679,\r\n            \"operator_id\": 20,\r\n            \"signal_strength\": -10\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/location",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"location"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
