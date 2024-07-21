@@ -1,5 +1,5 @@
 {
-	"id": "bc2bc869-f913-4e61-907a-413dd030abd6",
+	"id": "9387f4cb-ed72-49f1-b0a8-97daf952bc3b",
 	"name": "API-Tests",
 	"values": [
 		{
@@ -13,27 +13,9 @@
 			"value": "false",
 			"type": "default",
 			"enabled": true
-		},
-		{
-			"key": "base_url",
-			"value": "http://localhost:5000/",
-			"type": "default",
-			"enabled": false
-		},
-		{
-			"key": "serial_number",
-			"value": "",
-			"type": "default",
-			"enabled": false
-		},
-		{
-			"key": "device_model",
-			"value": "",
-			"type": "default",
-			"enabled": false
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2024-07-21T18:42:12.982Z",
+	"_postman_exported_at": "2024-07-21T19:04:13.502Z",
 	"_postman_exported_using": "Postman/11.4.0"
 }
