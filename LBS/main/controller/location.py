@@ -66,7 +66,7 @@ def add_new_gsm_cell(cell):
 
 
 @location.route("/", methods=["POST"])
-# @auth_guard()
+@auth_guard()
 def get_location():
     logging.basicConfig(level=logging.DEBUG)
     try:
