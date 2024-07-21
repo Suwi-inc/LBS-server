@@ -10,7 +10,7 @@
 		},
 		{
 			"key": "isDeviceRegistered",
-			"value": "false",
+			"value": "true",
 			"type": "default",
 			"enabled": true
 		},
