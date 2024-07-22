@@ -5,7 +5,6 @@ from ..auth.auth_provider import authenticate_device
 from ..auth.jwt_handler import generate_jwt
 from ..model.models import Device
 from ..utils.data_objects import RouteInfo
-from ..utils.logger import log_action
 
 
 def add_device_service(data, route: RouteInfo):
