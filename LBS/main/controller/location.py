@@ -7,10 +7,10 @@ from typing import List, Tuple
 from flask import Blueprint, abort, jsonify, request
 
 from .. import db
-from ..auth.auth_guard import auth_guard
 from ..model.models import GsmCell, Location
 from ..utils.data_objects import LocationInfo
 from ..utils.logger import log_action
+from ..auth.auth_guard import auth_guard
 
 location = Blueprint("location", __name__)
 
@@ -87,14 +87,14 @@ def get_location():
         err = "Could not parse request as JSON"
         abort(400, err)
     data = json.loads(request.data.decode("utf-8").replace("json=", ""))
-    log_action(
-        __name__,
-        "Location Request",
-        request.endpoint,
-        request.method,
-        data.get("serial_number"),
-        "info",
-    )
+    # log_action(
+    #     __name__,
+    #     "Location Request",
+    #     request.endpoint,
+    #     request.method,
+    #     data.get("serial_number"),
+    #     "info",
+    # )
     if "gsm_cells" not in data:
         return (jsonify({"error": "Not enough data provided"}),)
 
@@ -139,20 +139,20 @@ def get_location():
             "type": "GSM",
         }
 
-        log_action(
-            __name__,
-            str(data),
-            request.endpoint,
-            request.method,
-            data.get("serial_number"),
-            "info",
-            LocationInfo(
-                location_res["latitude"],
-                location_res["longitude"],
-                location_res["precision"],
-                datetime.now(timezone.utc),
-            ),
-        )
+        # log_action(
+        #     __name__,
+        #     str(data),
+        #     request.endpoint,
+        #     request.method,
+        #     data.get("serial_number"),
+        #     "info",
+        #     LocationInfo(
+        #         location_res["latitude"],
+        #         location_res["longitude"],
+        #         location_res["precision"],
+        #         datetime.now(timezone.utc),
+        #     ),
+        # )
 
         return jsonify({"position": location_res}), 200
 
@@ -166,18 +166,18 @@ def get_location():
         "type": "GSM",
     }
     # Successful Location request log
-    log_action(
-        __name__,
-        str(data),
-        request.endpoint,
-        request.method,
-        data.get("serial_number"),
-        "info",
-        LocationInfo(
-            location_res["latitude"],
-            location_res["longitude"],
-            location_res["precision"],
-            datetime.now(timezone.utc),
-        ),
-    )
+    # log_action(
+    #     __name__,
+    #     str(data),
+    #     request.endpoint,
+    #     request.method,
+    #     data.get("serial_number"),
+    #     "info",
+    #     LocationInfo(
+    #         location_res["latitude"],
+    #         location_res["longitude"],
+    #         location_res["precision"],
+    #         datetime.now(timezone.utc),
+    #     ),
+    # )
     return jsonify({"position": location_res}), 200
