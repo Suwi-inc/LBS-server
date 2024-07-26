@@ -11,5 +11,5 @@ RUN poetry install --no-dev
 
 COPY . .
 
-CMD ["poetry", "run", "gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "app:app"]
+CMD ["poetry", "run", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
 
