@@ -34,7 +34,7 @@ jobs:
       - name: Wait for Docker container to be ready
         run: |
           # Wait for the API to be ready
-          until $(curl --output /dev/null --silent --head --fail http://localhost:5000); do
+          until $(curl --output /dev/null --silent --head --fail http://localhost:80); do
             printf '.'
             sleep 5
           done
@@ -49,7 +49,7 @@ jobs:
 
       - name: Run Postman tests
         run: |
-          newman run Collections/collection.json -e Collections/environment.json --env-var base_url=http://localhost:5000
+          newman run Collections/collection.json -e Collections/environment.json --env-var base_url=http://localhost:80
  
 
       - name: Clean up Docker Compose
