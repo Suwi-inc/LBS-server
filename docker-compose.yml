@@ -15,6 +15,7 @@ services:
       - "SECRET_KEY=${SECRET_KEY}"
     depends_on: [ db ]
   db:
+    container_name: db_prod
     image: postgres:15.7
     environment:
       POSTGRES_USER: ${DATABASE_USER}
@@ -22,3 +23,11 @@ services:
       POSTGRES_DB: ${DATABASE_LBS_NAME}
     volumes: [ .:/docker-entrypoint-initdb.d ]
     ports: [ 5433:5432 ]
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./LBS/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - lbs

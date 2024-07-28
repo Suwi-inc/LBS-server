@@ -25,6 +25,7 @@ typing-extensions = "4.11.0"
 werkzeug = "3.0.2"
 python-dotenv = "^1.0.1"
 pyjwt = "^2.8.0"
+gunicorn = "^22.0.0"
 
 
 [build-system]

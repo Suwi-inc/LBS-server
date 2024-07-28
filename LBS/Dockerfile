@@ -5,11 +5,11 @@ WORKDIR /LBS
 RUN pip install --no-cache-dir poetry==1.8.3
 
 COPY ./pyproject.toml .
-
 COPY ./poetry.lock .
 
-RUN poetry install
+RUN poetry install --no-dev
 
 COPY . .
 
-CMD ["poetry", "run", "flask", "--app", "app", "run", "--host=0.0.0.0"]
+CMD ["poetry", "run", "gunicorn", "-w", "2", "-b", "0.0.0.0:8000", "app:app"]
+
